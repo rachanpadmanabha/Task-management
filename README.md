@@ -60,6 +60,7 @@ To get started with the To-Do App, follow these steps:
 - **Edit a Task:** Click on an existing task to edit its details.
 - **Delete a Task:** Use the delete button associated with each task.
 - **Manage Task Status:** Use the dropdown menu to change the status of a task.
+- **Filter Tasks by title:** Use the searchbar at top to filter all tht tasks.
 
 ## Components
 
