@@ -43,6 +43,8 @@ function TaskForm({ task, onSubmit, onCancel, action }) {
         <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-lg">
             <input
                 type="text"
+                id="task-title"
+                name="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter the title"
@@ -51,6 +53,8 @@ function TaskForm({ task, onSubmit, onCancel, action }) {
             />
             <textarea
                 value={description}
+                id="task-description"
+                name="description"
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Enter the description"
                 className="w-full p-2 mb-2 border rounded text-[#231F20] text-[12px] font-normal"
