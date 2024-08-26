@@ -23,7 +23,7 @@ const CustomDropdown = ({ options, onStatusChange, selectedValue, }) => {
                             ? "bg-green-500"
                             : selectedStatus === "In Progress"
                                 ? "bg-yellow-500"
-                                : selectedStatus === "Pending" // Updated color for Pending
+                                : selectedStatus === "Pending"
                                     ? "bg-gray-500"
                                     : "bg-gray-500"
                             }`}

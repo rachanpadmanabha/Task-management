@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Dropdown from './DropDown'; // Make sure to import the custom Dropdown component
+import Dropdown from './DropDown';
 
 const options = {
     weekday: 'short',
@@ -60,8 +60,8 @@ function TaskForm({ task, onSubmit, onCancel, action }) {
                 <div className="mb-2">
                     <Dropdown
                         options={["Pending", "In Progress", "Completed"]}
-                        selectedValue={status}  // Pass the selected value
-                        onStatusChange={handleStatusSelect}  // Pass the handler for selection
+                        selectedValue={status}
+                        onStatusChange={handleStatusSelect}
                         ariaLabel="Task Status"
                     />
                 </div>

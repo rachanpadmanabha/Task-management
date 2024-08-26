@@ -9,7 +9,7 @@ import {
 
 function TaskList({ tasks, onEdit, onDelete, onAdd }) {
     const taskLen = JSON.parse(localStorage.getItem('tasks'))?.length ?? 0;
-    // Group tasks by status
+
     const groupedTasks = tasks.reduce((acc, task) => {
         if (!acc[task.status]) {
             acc[task.status] = [];
@@ -18,7 +18,7 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
         return acc;
     }, {});
 
-    // Determine the section with the least number of tasks
+
     const getLeastTasksSection = () => {
         const taskCounts = {
             "In Progress": (groupedTasks["In Progress"] || [])?.length ?? 0,
@@ -26,7 +26,7 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
             Pending: (groupedTasks["Pending"] || [])?.length ?? 0,
         };
 
-        // Filter out sections with zero tasks
+
         const nonEmptySections = Object.entries(taskCounts).filter(
             ([status, count]) => count > 0
         );
@@ -35,7 +35,6 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
 
         const minCount = Math.min(...nonEmptySections.map(([_, count]) => count));
 
-        // Find the status with the minimum count among non-empty sections
         const leastTasksSection = nonEmptySections.find(
             ([_, count]) => count === minCount
         );
@@ -43,7 +42,6 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
         return leastTasksSection ? leastTasksSection[0] : null;
     };
 
-    // Compute the default open section
     const openSection = getLeastTasksSection();
 
     const renderTasks = (taskList) =>
@@ -185,7 +183,7 @@ TaskList.propTypes = {
     ).isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
-    onAdd: PropTypes.func.isRequired, // Add this line to handle the 'Create New Task' button click
+    onAdd: PropTypes.func.isRequired,
 };
 
 export default TaskList;
