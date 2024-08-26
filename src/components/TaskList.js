@@ -8,6 +8,7 @@ import {
 } from "@headlessui/react";
 
 function TaskList({ tasks, onEdit, onDelete, onAdd }) {
+    const taskLen = JSON.parse(localStorage.getItem('tasks'))?.length ?? 0;
     // Group tasks by status
     const groupedTasks = tasks.reduce((acc, task) => {
         if (!acc[task.status]) {
@@ -20,9 +21,9 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
     // Determine the section with the least number of tasks
     const getLeastTasksSection = () => {
         const taskCounts = {
-            "In Progress": (groupedTasks["In Progress"] || []).length,
-            Completed: (groupedTasks["Completed"] || []).length,
-            Pending: (groupedTasks["Pending"] || []).length,
+            "In Progress": (groupedTasks["In Progress"] || [])?.length ?? 0,
+            Completed: (groupedTasks["Completed"] || [])?.length ?? 0,
+            Pending: (groupedTasks["Pending"] || [])?.length ?? 0,
         };
 
         // Filter out sections with zero tasks
@@ -150,7 +151,7 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
                     )}
                 </Disclosure>
             ))}
-            {tasks.length === 0 && (
+            {taskLen === 0 && (
                 <div className="text-center py-8">
                     <p className="text-gray-600 mb-4">No tasks available.</p>
                     <button
@@ -159,6 +160,12 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
                     >
                         Create New Task
                     </button>
+                </div>
+            )}
+            {taskLen !== 0 && !tasks?.length && (
+                <div className="text-center py-8">
+                    <p className="text-gray-600 mb-4">No tasks found for the filter.</p>
+
                 </div>
             )}
         </div>
