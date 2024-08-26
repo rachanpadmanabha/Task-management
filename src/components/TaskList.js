@@ -44,7 +44,6 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
 
     // Compute the default open section
     const openSection = getLeastTasksSection();
-    console.log(openSection);
 
     const renderTasks = (taskList) =>
         taskList.map((task) => (
@@ -114,7 +113,7 @@ function TaskList({ tasks, onEdit, onDelete, onAdd }) {
         ));
 
     return (
-        <div className="bg-white p-4 rounded-lg shadow-lg">
+        <div className="bg-white p-4 rounded-lg shadow-lg overflow-scroll">
             {Object.entries(groupedTasks).map(([status, taskList]) => (
                 <Disclosure key={status} defaultOpen={status === openSection}>
                     {({ open }) => (

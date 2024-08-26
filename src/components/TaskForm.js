@@ -17,14 +17,12 @@ function TaskForm({ task, onSubmit, onCancel, action }) {
         if (task) {
             setTitle(task.title);
             setDescription(task.description);
-            setStatus(task.status);
+            setStatus(task ? task.status : 'Pending');
         }
     }, [task]);
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!title.trim() || !description.trim()) {
-            // Optionally, show an error message or handle validation
             return;
         }
 
@@ -79,7 +77,8 @@ function TaskForm({ task, onSubmit, onCancel, action }) {
                 </button>
                 <button
                     type="submit"
-                    className="px-4 py-2 text-[14px] font-normal bg-[#034EA2] hover:bg-[#023269] text-white rounded"
+                    className={`px-4 py-2 text-[14px] font-normal bg-[#034EA2]  text-white rounded ${title.trim() === "" || description.trim() === "" ? "bg-[#3072bd] cursor-not-allowed" : "hover:bg-[#023269]"} `}
+                    disabled={(title.trim() === "" || description.trim() === "")}
                     aria-label={action === 'ADD' ? 'Add Task' : 'Update Task'}
                 >
                     {action === 'ADD' ? 'Add' : 'Update'}
