@@ -1,23 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import Header from './Header';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [filter, setFilter] = useState('');
   const navigate = useNavigate();
+
+  const handleFilterChange = useCallback(
+    (filterValue) => {
+      setFilter(filterValue);
+      setFilteredTasks(tasks.filter(task => task.title.toLowerCase().includes(filterValue.toLowerCase())));
+    },
+    [tasks]
+  );
 
   useEffect(() => {
     const savedTasks = JSON.parse(localStorage.getItem('tasks'));
     if (savedTasks && savedTasks.length > 0) {
       setTasks(savedTasks);
+      setFilteredTasks(savedTasks);
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+    handleFilterChange(filter);
+  }, [tasks, filter, handleFilterChange]);
 
   const addTask = (newTask) => {
     setTasks([...tasks, { ...newTask, id: Date.now() }]);
@@ -33,23 +47,34 @@ function App() {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
-  const findTaskById = (id) => {
-    return tasks.find(task => task.id === parseInt(id));
-  };
 
   return (
     <div className="relative min-h-screen p-4 max-w-2xl m-auto">
-      <Header title="TO-DO APP" />
+
       <Routes>
+
         <Route
           path="/"
           element={
             <>
+              <Header title="TO-DO APP" />
+              <div className="relative w-full p-4">
+                <input
+                  type="text"
+                  value={filter}
+                  onChange={(e) => handleFilterChange(e.target.value)}
+                  placeholder="Search To-Do"
+                  className="w-full h-10 pl-10 pr-4 border rounded text-[#231F20] text-[12px] font-normal"
+                />
+                <div className="absolute inset-y-0 left-3 pl-3 flex items-center pointer-events-none">
+                  <FontAwesomeIcon icon={faSearch} />
+                </div>
+              </div>
               <TaskList
-                tasks={tasks}
+                tasks={filteredTasks}
                 onEdit={(task) => navigate(`/edit/${task.id}`)}
                 onDelete={deleteTask}
-                onAdd={() => navigate('/')}
+                onAdd={() => navigate('/add')}
               />
               <button
                 onClick={() => navigate('/add')}
@@ -63,17 +88,24 @@ function App() {
         <Route
           path="/add"
           element={
-            <TaskForm
-              task={null}
-              onSubmit={addTask}
-              onCancel={() => navigate('/')}
-              action="ADD"
-            />
+            <>
+              <Header title="Add Task" />
+              <TaskForm
+                task={null}
+                onSubmit={addTask}
+                onCancel={() => navigate('/')}
+                action="ADD"
+              />
+            </>
+
           }
         />
         <Route
           path="/edit/:id"
-          element={<EditTaskForm onSubmit={updateTask} onCancel={() => navigate('/')} />}
+          element={
+            <>
+              <Header title="Edit Task" />
+              <EditTaskForm onSubmit={updateTask} onCancel={() => navigate('/')} /></>}
         />
       </Routes>
     </div>
